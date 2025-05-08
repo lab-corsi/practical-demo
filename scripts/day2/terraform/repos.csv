@@ -1,0 +1,3 @@
+name,private,team,permission
+my-repo-1,true,dev-team,admin
+my-repo-2,false,qa-team,write

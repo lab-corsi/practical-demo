@@ -1,0 +1,114 @@
+name: Workflow 2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  step_1:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo key:value
+
+  step_2:
+    steps:
+      - run: echo "oops"
+
+  step_3:
+    runs-on: ubuntu-latest
+    steps:
+      - use: actions/checkout@v3
+
+      - uses: actions/setup-python
+
+  step@4:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo i'm fine"
+
+  step_5:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: 16
+    steps:
+      - run: echo "node version"
+
+  step_6:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "first job"
+
+  step_6:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "second job"
+
+  step_7:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "check"
+        if: ${{ check_value == 'true' }}
+
+  step_8:
+    runs-on: ubuntu-latest
+    needs: step_1_job
+    steps:
+      - run: echo "i'm fine"
+
+  step_9:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ inputs.region }}"
+
+  step_10:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: ${{ fromJson('["dev","staging"') }}
+    steps:
+      - run: echo "i'm fine"
+
+  step_11:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ needs.build.outputs.ok }}"
+
+  step_12:
+    runs-on: ubuntu-latest
+    env:
+      FOO.BAR: value
+    steps:
+      - run: echo "env with dot"
+
+  step_13:
+    runs-on: ubuntu-latest
+    outputs:
+      val#dev: ${{ steps.out.outputs.val }}
+    steps:
+      - run: echo "::set-output name=val::test"
+
+  step_14:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test@Step
+        run: echo "invalid"
+
+  step_15:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: raed
+    steps:
+      - run: echo "i'm fine"
+
+  step_16:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ job.status }}"
+
+  step_17:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./artifact

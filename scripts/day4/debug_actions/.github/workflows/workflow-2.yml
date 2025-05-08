@@ -1,0 +1,47 @@
+name: workflow 2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  runtime_errors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1
+        run: exit 1
+
+      - name: Step 2
+        run: not_a_command
+
+      - name: Step 3
+        run: cat missing_file.txt
+
+      - name: Step 4
+        run: touch /root/forbidden.txt
+
+      - name: Step 5
+        run: |
+          if [ -f foo ]; then
+          echo "oops"
+
+      - name: Step 6
+        run: echo "${{ secrets.UNSET_SECRET }}"
+
+      - name: Step 7
+        run: echo "$MISSING_VAR"
+
+      - name: Step 8
+        run: gh repo view
+        env:
+          GH_TOKEN: ""
+
+      - name: Step 9
+        run: az account show
+
+      - name: Step 10
+        run: git describe --tags
+
+      - name: Step 11
+        run: |
+          echo "Looks fine..."
+          false
