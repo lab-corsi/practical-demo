@@ -12,7 +12,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./ # o la tua cartella TF, se diversa
+        working-directory: ./scripts/day2/terraform # o la tua cartella TF, se diversa
 
     steps:
       - name: Checkout repository

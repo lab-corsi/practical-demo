@@ -23,4 +23,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ADMIN_TOKEN }}
           GITHUB_ORG: ${{ secrets.GH_ORG }}
-        run: python github_setup.py
+        run: python scripts/day2/gh_api/github_setup.py
