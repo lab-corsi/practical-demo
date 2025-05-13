@@ -2,3 +2,5 @@
 *.log
 *.exe
 *.dll
+.venv
+__pycache__/
