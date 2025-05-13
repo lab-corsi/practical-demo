@@ -5,9 +5,9 @@ name: Python application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -22,29 +22,29 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v3.2.1
-      with:
-        versionSpec: '6.3.x'
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3.2.1
+        with:
+          versionSpec: "5.12.0"
 
-    - name: Determine Version
-      id: version_step # step id used as a reference for output values
-      uses: gittools/actions/gitversion/execute@v3.2.1
+      - name: Determine Version
+        id: version_step # step id used as a reference for output values
+        uses: gittools/actions/gitversion/execute@v3.2.1
 
-    - name: Set up Python ${{ matrix.version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.version }}
+      - name: Set up Python ${{ matrix.version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.version }}
 
-    - uses: yezz123/setup-uv@v4
-    - name: Install dependencies
-      run: |
-        uv sync --dev
-    - name: Test with pytest
-      working-directory: scripts/day3/cicd_python
-      run: |
-        uv run pytest 
+      - uses: yezz123/setup-uv@v4
+      - name: Install dependencies
+        run: |
+          uv sync --dev
+      - name: Test with pytest
+        working-directory: scripts/day3/cicd_python
+        run: |
+          uv run pytest
