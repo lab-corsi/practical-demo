@@ -23,4 +23,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ADMIN_TOKEN }}
           GITHUB_ORG: ${{ secrets.GH_ORG }}
-        run: python scripts/day2/gh_api/github_setup.py
+        defaults:
+          run:
+            working-directory: scripts/day2/gh_api
+        run: python github_setup.py
