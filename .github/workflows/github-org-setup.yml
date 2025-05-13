@@ -6,6 +6,9 @@ on:
 jobs:
   setup-org:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: scripts/day2/gh_api
 
     steps:
       - name: Checkout repository
@@ -23,4 +26,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ADMIN_TOKEN }}
           GITHUB_ORG: ${{ secrets.GH_ORG }}
-        run: python scripts/day2/gh_api/github_setup.py
+
+        run: python github_setup.py
