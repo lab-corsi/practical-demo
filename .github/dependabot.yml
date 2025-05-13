@@ -6,6 +6,6 @@
 version: 2
 updates:
   - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/day3/cicd_python" # Location of package manifests
+    directory: "scripts/day3/cicd_python" # Location of package manifests
     schedule:
       interval: "daily"
