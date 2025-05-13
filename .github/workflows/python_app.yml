@@ -30,4 +30,4 @@ jobs:
     - name: Test with pytest
       working-directory: scripts/day3/cicd_python
       run: |
-        pytest 
+        uv run pytest 
