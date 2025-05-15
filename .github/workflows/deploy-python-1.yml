@@ -1,0 +1,89 @@
+name: CI/CD Python App
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - develop
+  pull_request:
+
+env:
+  APP_NAME: my-python-app
+
+jobs:
+  # ---------- CI Job: Test Across Python Versions ----------
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.10, 3.11, 3.12, 3.13]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+  # ---------- CD Job: Deploy to Dev ----------
+  deploy-dev:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Deploy to Development
+        run: echo "Deploying $APP_NAME to development environment"
+        env:
+          ENV_NAME: dev
+          DEV_SECRET: ${{ secrets.DEV_SECRET }}
+
+  # ---------- CD Job: Deploy to Staging ----------
+  deploy-staging:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Deploy to Staging
+        run: echo "Deploying $APP_NAME to staging environment"
+        env:
+          ENV_NAME: staging
+          STAGING_SECRET: ${{ secrets.STAGING_SECRET }}
+
+  # ---------- CD Job: Deploy to Production ----------
+  deploy-prod:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Deploy to Production
+        run: echo "Deploying $APP_NAME to production environment"
+        env:
+          ENV_NAME: prod
+          PROD_SECRET: ${{ secrets.PROD_SECRET }}
