@@ -27,19 +27,32 @@ env:
 
 jobs:
   test:
+    strategy:
+      matrix:
+        version: [3.11, 3.12, 3.13]
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
     name: pytest
-    runs-on: ubuntu-latest
 
     steps:
-      - name: pytest
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.version }}
+
+      - uses: yezz123/setup-uv@v4
+
+      - name: Install dependencies
         run: |
-          echo "Job dei test"
-          echo "$PDM_USER\n$PDM_PASSWORD $PDM_USER | pdm install -v"
-          pip install pdm==2.16.1
-          pdm config python.use_venv false
-          printf "$PDM_USER\n$PDM_PASSWORD" "$PDM_USER" | pdm install --dev -v
-          sleep 120
-          pdm run pytest -vvv -s --disable-warnings --cov-report=html --create-db --cov-config=.coveragerc --cov=src/icsc_db2_api tests
+          uv sync --dev
+
+      - name: Test with pytest
+        working-directory: scripts/day3/cicd_python
+        run: |
+          uv run pytest -vvv -s --disable-warnings --cov-report=html --create-db
+
         env:
           SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET: ${{ secrets.SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET }}
           ICSC_DB2_API_SECRET_KEY: ${{ secrets.ICSC_DB2_API_SECRET_KEY }}
@@ -48,4 +61,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
-          path: output/test/code-coverage.html
+          path: html_coverage/code-coverage.html
