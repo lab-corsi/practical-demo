@@ -64,6 +64,7 @@ jobs:
           path: scripts/day3/cicd_python/html_coverage/
 
       - name: Code Coverage Summary Report
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
           badge: true
