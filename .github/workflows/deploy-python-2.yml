@@ -1,0 +1,85 @@
+name: CI/CD Python App
+
+on:
+  push:
+    branches:
+      - develop
+      - staging
+      - main
+
+env:
+  APP_NAME: my-python-app
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.10, 3.11, 3.12, 3.13]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest tests/
+
+  deploy-dev:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - run: pip install -r requirements.txt
+
+      - name: Deploy to Dev
+        run: echo "Deploying to Dev..."
+        env:
+          SECRET: ${{ secrets.DEV_SECRET }}
+
+  deploy-staging:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - run: pip install -r requirements.txt
+
+      - name: Deploy to Staging
+        run: echo "Deploying to Staging..."
+        env:
+          SECRET: ${{ secrets.STAGING_SECRET }}
+
+  deploy-prod:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - run: pip install -r requirements.txt
+
+      - name: Deploy to Prod
+        run: echo "Deploying to Production..."
+        env:
+          SECRET: ${{ secrets.PROD_SECRET }}
