@@ -80,18 +80,9 @@ jobs:
           output: both
           thresholds: '30 80'
 
-      - name: debug ls scripts
-        working-directory: scripts/day3/cicd_python
-        run: |
-          ls -lah
-
-      - name: debug ls root
-        run: |
-          ls -lah
-
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
         if: github.event_name == 'pull_request'
         with:
           recreate: true
-          path: ./scripts/day3/cicd_python/code-coverage-results.md
+          path: code-coverage-results.md
