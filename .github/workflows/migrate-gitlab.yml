@@ -40,6 +40,9 @@ jobs:
           printf "$PDM_USER\n$PDM_PASSWORD" "$PDM_USER" | pdm install --dev -v
           sleep 120
           pdm run pytest -vvv -s --disable-warnings --cov-report=html --create-db --cov-config=.coveragerc --cov=src/icsc_db2_api tests
+        env:
+          SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET: ${{ secrets.SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET }}
+          ICSC_DB2_API_SECRET_KEY: ${{ secrets.ICSC_DB2_API_SECRET_KEY }}
 
       - name: Archive code coverage results
         uses: actions/upload-artifact@v4
