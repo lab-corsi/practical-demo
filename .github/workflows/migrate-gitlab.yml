@@ -51,7 +51,7 @@ jobs:
       - name: Test with pytest
         working-directory: scripts/day3/cicd_python
         run: |
-          uv run pytest -vvv -s --disable-warnings --cov-report=html --create-db
+          uv run pytest -vvv -s --disable-warnings --cov-report=html --cov-config=.coveragerc --cov=custom_math tests
 
         env:
           SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET: ${{ secrets.SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET }}
@@ -61,4 +61,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
-          path: html_coverage/code-coverage.html
+          path: scripts/day3/cicd_python/html_coverage/
