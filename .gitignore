@@ -4,3 +4,6 @@
 *.dll
 .venv
 __pycache__/
+
+html_coverage/
+.coverage

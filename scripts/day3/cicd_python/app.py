@@ -7,7 +7,9 @@ class SimpleHandler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.end_headers()
         self.wfile.write(b"Hello from Python HTTP server!")
-
+    def sum_values(self, a, b):
+        return a+b
+        
 def run(server_class=HTTPServer, handler_class=SimpleHandler, port=8000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)

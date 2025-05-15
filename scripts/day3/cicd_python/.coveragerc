@@ -1,0 +1,22 @@
+[run]
+branch = True
+source = icsc_auth
+         icsc_db2_api
+         icsc_django_common
+
+[report]
+omit = **/init.py
+       **/tests/**
+
+exclude_lines =
+    pragma: no cover
+    def repr
+    if self.debug:
+    if settings.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if name == .main.:
+
+[html]
+directory = html_coverage
