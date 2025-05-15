@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  pull-requests: write
+
 env:
   DJANGO_SETTINGS_MODULE: 'icsc_db2_api.config.settings'
   SOCIAL_AUTH_CLIENT_ID: '3d770df0-7657-4325-97e4-0dd72d9137a3'
@@ -77,9 +80,18 @@ jobs:
           output: both
           thresholds: '30 80'
 
+      - name: debug ls scripts
+        working-directory: scripts/day3/cicd_python
+        run: |
+          ls -lah
+
+      - name: debug ls root
+        run: |
+          ls -lah
+
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
         if: github.event_name == 'pull_request'
         with:
           recreate: true
-          path: scripts/day3/cicd_python/code-coverage-results.md
+          path: ./scripts/day3/cicd_python/code-coverage-results.md
